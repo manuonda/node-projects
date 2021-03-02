@@ -2,7 +2,6 @@ const {Router} = require("express")
 const router = Router();
 const { all , create, single } =  require("../controllers/products")
 const { validateCreate  } = require("../middlewares/actions/product")
-const { validateId } = require("../mid")
 
 
 router.get("/", all );

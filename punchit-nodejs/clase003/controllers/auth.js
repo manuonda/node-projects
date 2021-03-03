@@ -1,4 +1,5 @@
-const User = require('../model/User')
+const User = require('../model/User');
+const { createToken } = require('../services/auth');
 const { hash, unhash } = require('../util/bcrypt')
 
 
@@ -26,14 +27,21 @@ const authenticate = async (req, res) => {
 
     try {
      const { email  , password } =  req.body ;
-     console.log(email, password);
      const user = await User.findOne({ email });
-     console.log(user);
+    
      if ( user) {
-         const isPasswordValidate = unhash(password, user.password);
-         console.log(isPasswordValidate)
+        // descifrado del password y el user 
+        const isPasswordValidate = unhash(password, user.password);
+         
+        const JWTObject= {
+            _id: user.id,
+            email
+        };
+        // creamos el token
+        const JWT = createToken(JWTObject);
+        
          if (!isPasswordValidate) return res.status(401).json({message: 'Usuario o Password incorrectos'});
-         res.status(200).json({ message : 'Usuario validado'})
+         res.status(200).json({ message : 'Usuario validado' , JWT})
      } else {
          res.status(401).json({message: 'Datos no ingresados'});
      }

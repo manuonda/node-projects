@@ -14,9 +14,11 @@ app.use(bodyParser.json())
 
 const productRouter = require("./routes/product")
 const authRouter    = require('./routes/auth')
+const purchaseRouter = require('./routes/purchase')
 
 app.use("/products", productRouter);
 app.use("/auth", authRouter)
+app.use('/purchase', purchaseRouter)
 
 try {
       

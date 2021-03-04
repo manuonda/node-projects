@@ -2,8 +2,10 @@ require('dotenv').config()
 const express = require("express")
 const bodyParser = require("body-parser")
 const app  = express()
-const {dbConnection} =  require('./database/config')
 
+const {dbConnection} =  require('./database/config')
+const { securedUser } = require('./middlewares/auth');
+ 
 dbConnection();
 
 const port = process.env.PORT || 4000
@@ -18,7 +20,7 @@ const purchaseRouter = require('./routes/purchase')
 
 app.use("/products", productRouter);
 app.use("/auth", authRouter)
-app.use('/purchase', purchaseRouter)
+app.use('/purchase', securedUser,  purchaseRouter)
 
 try {
       

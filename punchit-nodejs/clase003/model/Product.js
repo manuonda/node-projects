@@ -12,6 +12,11 @@ const ProductSchema = Schema({
   ts_create : {
       type: Date,
       default: Date.now
+  },
+  users: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
   }
 });
 

@@ -27,7 +27,7 @@ const authenticate = async (req, res) => {
 
     try {
      const { email  , password } =  req.body ;
-     const user = await User.findOne({ email });
+     const user = await User.findOne({ email },{password : 1 , role :1 });
     
      if ( user) {
         // descifrado del password y el user 
@@ -35,7 +35,8 @@ const authenticate = async (req, res) => {
          
         const JWTObject= {
             _id: user.id,
-            email
+            email, 
+            role
         };
         // creamos el token
         const JWT = createToken(JWTObject);

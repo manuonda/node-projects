@@ -17,6 +17,10 @@ const ProductSchema = Schema({
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true
+  },
+  photos: {
+      type: Schema.Types.Array,
+      default: []
   }
 });
 

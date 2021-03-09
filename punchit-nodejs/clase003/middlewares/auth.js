@@ -1,6 +1,12 @@
 const { token } = require('morgan');
 const { decodeToken } = require('../services/auth')
 
+const decodeHeaders = (req) =>{
+    const {authorization} = req.headers;
+    const {_id , role }   =  authorization;
+    return { _id, role};
+}
+
 const securedUser = (req, res, next) => {
     try {
         
@@ -20,4 +26,19 @@ const securedUser = (req, res, next) => {
     }
 }
 
-module.exports =  { securedUser }
+
+
+const securedAdmin = (req, res, next) => {
+    try {
+        const {_id , role }  = decodeHeaders(req); 
+       if (role !=="admin" ) throw new Error("No tenes acceso a esta ruta");
+       req.id = _id;
+       req.role = role;
+       next();
+    } catch (error) {
+       res.status(401).json({ message: 'Unautorized'}) 
+    }
+
+}
+
+module.exports =  { securedUser , securedAdmin}
